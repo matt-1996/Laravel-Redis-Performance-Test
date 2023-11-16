@@ -12,11 +12,17 @@ class BlogController extends Controller
 
     public function seedBlog()
     {
-        $i=0;
-        for($i ; $i <= 500000; $i++){
+        // $i=0;
+        for($i=0 ; $i <= 12000; $i++){
 
-            DB::table('blogs')->insert([
-                'title' => "$i blog",
+            // DB::table('blogs')->insert([
+            //     'title' => "$i blog",
+            //     'sub_header' => "This is the $i sub header",
+            //     'content' => 'BLOG_CONTENT'
+            // ]);
+
+            blog::create([
+                "title" => "$i Blog",
                 'sub_header' => "This is the $i sub header",
                 'content' => 'BLOG_CONTENT'
             ]);
@@ -37,9 +43,17 @@ class BlogController extends Controller
                 'data' => $blog,
             ]);
         }else {
-            Benchmark::dd([
-                'Get Blogs' => fn () => blog::all(),
-            ]); // ms
+            $blog = Blog::find($id);
+
+            $cachedBlog = Redis::set('blog_'. $id, json_encode($blog));
+
+            return response()->json([
+                'status_code' => 201,
+                'message' => 'Fetched from Eloquent',
+                'data' => $blog]);
+            // Benchmark::dd([
+            //     'Get Blogs' => fn () => blog::all(),
+            // ]); // ms
             // $blog = blog::find($id);
             // Redis::set('blog_' . $id, $blog);
 

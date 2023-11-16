@@ -17,8 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/blogs/{id}', [BlogController::class, 'index']);
+Route::get('/blog/{id}', [BlogController::class, 'index']);
 
 Route::get('/seedBlog', [BlogController::class, 'seedBlog']);
 
-Route::get('/all', [BlogController::class, 'all']);
+Route::get('/blogs', [BlogController::class, 'all']);
